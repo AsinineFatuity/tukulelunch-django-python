@@ -1,0 +1,14 @@
+.pledge_table{
+    min-width: 400px;
+    font-size: 14px;
+}
+
+.pledge_thread{
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: .2cm;
+}
+.pledge_icon{
+    text-decoration: none;
+    color: white;
+}

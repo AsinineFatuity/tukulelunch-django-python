@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Commitment #{{ transaction.id }}</title>
+    <style>
+        table {
+            width: 60%;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        table tr td {
+            border: 1px solid #c1c1c1;
+        }
+        p {
+            padding-right: 50px;
+            padding-left: 50px;
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <h1>Thanks for commiting to your pledges</h1>
+        <p>This email is to confirm that you have successfully committed to your pledges</p>
+    </center>
+    <br>
+    <table>
+        <tr>
+            <td valign="top" colspan="2" style="width: 50%;">
+             <b>Your Personal Details:</b> <br>
+             {{ transaction.name }} <br>
+             {{ transaction.email_address }} <br>
+             {{ transaction.phone_number }} <br>
+             {{ transaction.ministry }} <br>
+            </td>
+            <td valign="top" colspan="2" style="width: 50%;">
+            <b>Commitment ID:</b> #{{ transaction.id }} <br> 
+            <b>Commitment Date: </b> {{ transaction.commitment_date }} <br> 
+            <b>Payment Deadline: </b> {{ transaction.deadline }} <br> 
+            </td>
+        </tr>
+        <tr>
+            <td><b>Pledged Item</b></td>
+            <td><b>Quantity</b></td>
+            <td><b>Unit Price</b></td>
+            <td><b>Sub-Total</b></td>
+        </tr>
+        {% for item in commitment_items %}
+        <tr>
+            <td>{{ item.product }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.sub_total }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="3" style="text-align: right;"><b>Total</b></td>
+            <td>KES {{ transaction.total }}</td>
+        </tr>
+    </table>
+    <center>
+        <br>
+        <p>If you are a registered pledger and would like to check your commitment history,
+            please <a href="http://localhost:8000/account/signin"> sign in</a>
+            <br>Otherwise <a href="http://localhost:8000/account/create">sign up</a>
+            to create an account with us.
+        </p>
+    </center>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+All Items
+{% endblock %}
+{% block content%}
+<link rel="stylesheet" href="{% static 'css/display.css' %}">
+<div class="py-4">
+    <div class="container">
+        <div class="row">
+          <div class="col-10 mx-auto my-2 text-center">
+              <br>
+              <div class="text-center product_title">
+                Everything You Can Pledge
+              </div>       
+          </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row row-no-gutters">
+        {% for item in items %}
+        <!-- {%if item.stock > 0%} -->
+        <!--Display 4 thumbnails per row-->
+        <div class="col-9 col-md-6 col-lg-3 col-xs-4 d-flex align-items-center">
+            <div class="card mb-0"style="border-color:transparent;">
+                <div class="p-0">
+                    <a href="{{ item.get_url }}" > <!--Calls the get_url from the Item model which will call the item_detail url-->
+                    <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.name }}"> 
+                    </a>                    
+                </div>  
+                <div class="card-body d-flex justify-content-between">
+                    <h5 class="card-title font-weight-bold mb-0">{{item.name}}</h5>
+                    <h5 class="card-text text-info font-italic mb-0">
+                    <span class="mr-0 ml-1"> KES</span> {{item.price}}</h5>
+                    <!-- <a href="{{ item.get_url }}" class="btn btn-primary p-0 mb-0">View</a>        -->
+                </div>
+            </div>
+        </div>
+        <!-- {%endif%} -->
+        {%endfor%}
+    </div>
+</div>
+<!--My pagination logic-->
+<hr>
+{% if products.has_previous %}
+<a href="?page=1" style="color: white; text-decoration: none;">&laquo First</a>
+<a href="?page={{ products.previous_page_number }}" style="color: white; text-decoration: none;"> &nbsp;Previous</a>
+{% endif %}
+&nbsp; Page {{ items.number }} of {{ items.paginator.num_pages }}
+{% if items.has_next %}
+<a href="?page={{ items.next_page_number }}" style="color: white; text-decoration: none;"> &nbsp;Next</a>
+<a href="?page={{ items.paginator.num_pages }}"style="color: white; text-decoration: none;"> &nbsp;Last &raquo</a>
+{% endif %}
+{% endblock %}

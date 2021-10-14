@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Item
+{% endblock %}
+
+{% block content%}
+<link rel="stylesheet" href="{% static 'css/display.css' %}">
+<div class="container py-5">
+    <div class="row mt-5">
+        <div class="col-10 mx-auto col-md-6 my-3">
+            <img src="{{item.image.url}}" alt="">
+        </div>
+        <div>
+            <h1 class="product_title">{{item.name}}</h1>
+            <h5 class="text-info font-italic mb-3">
+                <span class="mr-1"> KES</span> {{item.price}}
+            </h5>
+            <p class="product_description">Item Description</p>
+            <p class="text-justify product_text">{{item.description}}</p>
+            {%if item.stock == 0 %}
+            <p class="text-justify product_text"><b>Fully Pledged</b></p>
+            {% else %}
+            <!--Send the item id(created automatically) to the add_pledge url(see my urls.py)-->
+            <h5 class="text-dark font-italic mb-3">
+                <span class="mr-1"> Required Quantity: </span> {{item.stock}}
+            </h5>
+            <a href="{% url 'add_pledge' item.id %}" style="text-decoration: none;">
+                <button type="button" class="btn btn-lg btn-block bg-dark text-primary">
+                    Pledge This Item
+                </button>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{%endblock%}

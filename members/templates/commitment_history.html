@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Commitment History
+{% endblock %}
+{% block content%}
+<link rel="stylesheet" href="{% static 'css/display.css' %}">
+   <div class="text-center">
+       <br>
+       <h1 class="text-center product_title">
+           Your Commitment History
+       </h1>
+       <!--Loop through the commitment_details if it is not empty-->
+       {% if commitment_details %}
+       <table class="table table-striped">
+        <div class="col-12 col-md-8 col-lg-6 pb-5">
+           <thead>
+               <tr>
+                   <th>Commitment Number</th>
+                   <th>Commitment Date</th> 
+                   <th>Deadline Date</th>
+                   <th>Total Amount</th>
+                   <th>Status</th>
+                   <th>Action</th>
+               </tr>
+           </thead>
+           <tbody>
+               {% for commitment in commitment_details %}
+               <tr>
+                   <td>{{ commitment.id }}</td>
+                   <td>{{ commitment.commitment_date }}</td>
+                   <td>{{ commitment.deadline }}</td>
+                   <td>{{ commitment.total }}</td>
+                   <td><i class="fas fa-spinner"></i>&nbsp;0% Honoured</td>
+                   <td><a href="{% url 'commit_detail' commitment.id %}"style="text-decoration: none; color: white;">View Commitment</a></td>
+               </tr>
+               {% endfor %}
+           </tbody>
+       </table>
+       {% else %}
+       <p>You have not committed any thing yet
+           <br><br>
+        <a href="{% url 'pledge_detail' %} " class="btn btn-secondary">
+            COMMIT YOUR PLEDGES  
+            </a>
+       </p>    
+       {% endif %}
+   </div>
+</div>
+   <br><br>
+{% endblock %}

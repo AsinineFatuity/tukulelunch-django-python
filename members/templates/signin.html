@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+<!--Load the crispy forms to use-->
+{% load crispy_forms_tags %}
+{% block title %}
+Sign In
+{% endblock %}
+{% block content%}
+<link rel="stylesheet" href="{% static 'css/display.css' %}">
+<div class="container">
+    <br>
+    <h1 class="product_title text-center">
+        Log In or Create A New Account
+    </h1>
+    <div class="row">
+        <div class="col-12 col-sm-12 col-lg-6 text-center custom_div">
+         <br>
+         <h2 class="product_title">
+           Hey New Pledger  
+         </h2> 
+         <br>
+         <p>When You Create An Account, You Can See And Track Your Commitment History
+         <a href="{% url 'signup' %}"class="btn btn-secondary">Create New Account</a>
+        </div>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6 bg-light">
+            <div>
+                <br>
+                <h2 class="product_title">
+                    Registered Pledgers Only 
+                </h2>
+                <form method="POST">
+                   {% csrf_token %} 
+                   <p>{{ form | crispy }}</p>
+                   <button type="submit" name="button" class="btn btn-secondary">Sign In</button>
+                </form>
+                <br>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
+<br>
+{% endblock %}

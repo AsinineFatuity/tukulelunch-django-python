@@ -1,0 +1,23 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Thanks
+{% endblock %}
+{% block content%}
+<link rel="stylesheet" href="{% static 'css/display.css' %}">
+<div class="text-center">
+    <br>
+    <br>
+    <h1 class="text-center">
+        Thank You <b>{{member_commitment.name}}</b> for committing to your pledges
+    </h1>
+    <br>
+    <br>
+    <p>You commitment id is: <b>{{member_commitment.id}}</b></p> 
+    <p>
+        We will keep you updated henceforth on your <a href="{% url 'commit_history' %}"style="color: white;">commitment progress.</a>
+        An Email has been sent to you containing the items you have committed to.
+    </p>
+</div>
+{%endblock%}

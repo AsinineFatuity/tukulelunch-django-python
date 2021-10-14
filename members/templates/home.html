@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Home And Dry
+{% endblock %}
+{% block content %}
+<link href='https://fonts.googleapis.com/css?family=Tangerine' rel='stylesheet'>
+<link rel="stylesheet" href="{% static 'css/display.css' %}">
+<!--Beginning of custom CSS styling for background image and text-->
+<style>
+    body {
+    margin: 0; 
+}
+.hero {
+    /*sizing the hero image so that it occupies full view port width and height*/
+    width: 100vw;
+    height: 100vh;
+    /*flexbox to center the elements that the text is in */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*Align the actual text to the center*/
+    text-align: center;
+    /* Background styles */
+    background-image:linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)), url("static/img/tukule-home.JPG");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+.hero h1 {
+    /* Text styles */
+    font-family: 'Tangerine';
+    font-size: 10em;
+    color:darkviolet;
+    /* Margins so that we do not have our sub title increase margin too*/
+    margin-top: 0;
+    margin-bottom: 0.05em;
+}
+.hero h2{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: floralwhite;
+}
+</style>
+<!--End of internal css styling-->
+
+<section class="hero">
+    <div class="hero-inner">
+        <h1>Tukule Lunch</h1>
+        <h2>"A man hath no better thing under the sun,
+            than to eat, and to drink, and to be merry"</h2>
+    </div>
+</section>
+<!-- <link rel="stylesheet" href="{% static 'css/display.css' %}">
+<link rel="stylesheet" href="{% static 'css/hero_image.css' %}"> 
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
+
+<div class="content-wrapper">
+    <img src="{%static 'img/tukule-home.JPG' %}"  alt="">
+    <div class="text-wrapper">
+        <h1>
+            "Then I commended mirth, because a man hath no better thing under the sun,
+            than to eat, and to drink, and to be merry..."~Eccl. 8:15  
+        </h1>
+    </div>
+</div> -->
+
+{%endblock%}

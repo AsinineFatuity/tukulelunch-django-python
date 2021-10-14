@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+<!--Load the crispy forms to use-->
+{% load crispy_forms_tags %}
+{% block title %}
+Sign Up
+{% endblock %}
+{% block content%}
+<link rel="stylesheet" href="{% static 'css/display.css' %}">
+    <div>
+     {% if not form.is_valid %} <!--Display the same form again to the pledger-->
+    <div class="max-auto">
+       <br>
+       <h1 class="product_title text-center">
+         Create A New Account
+        </h1>
+        <br>
+        <div class="col-9 col-sm-9 col-md-6 col-lg-5 mx-auto bg-light">
+            <br>
+            <p>Enter the following information to create a new account</p>
+            <form method="post">
+            {% csrf_token %}
+            <p>{{ form | crispy }}</p>
+            <button type="submit" name="button" class="btn btn-secondary">Sign Up</button>
+            </form>
+            <br>
+        </div>
+    </div>
+     {% else %}<!--Customer has submitted a valid form-->
+      <div class="mx-auto">
+          <br>
+          <h1 class="product_title text-center">
+           Your account has been created successfully
+          </h1>
+          <br>
+          <div class="container">
+              <p>
+                Dear pledger
+                <br>
+                <br>
+                Your account has been created and is ready to use.
+                <br>
+                <a href="{% url 'signin' %}" style="text-decoration: none;">Sign In</a> to continue pledging!
+              </p>
+          </div>
+      </div>
+     {% endif %}
+    </div>
+    <br>
+{% endblock %}

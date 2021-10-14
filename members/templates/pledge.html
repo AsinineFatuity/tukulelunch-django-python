@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Pledges
+{% endblock %}
+{% block content%}
+<!--Extend css for this file only-->
+<link rel="stylesheet" href="{% static 'css/popupform.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap">
+<!--Check if the pledge_items are empty-->
+{% if not pledge_items %}
+<div class="text-center">
+    <br>
+    <h1 class="text-center product_title">
+        You haven't Pledged Yet
+    </h1>
+    <br>
+    <p class="text-center">
+    Please click <a href="{% url 'disp_home'%}"style="text-decoration:none; color: white;">here</a> to pledge ):
+ </p>
+</div>
+<!--Now display their pledged items if they have any-->
+{%else%}
+<div class="text-center">
+    <br>
+    <div class="text-center product_title">
+      Your Pledges  
+    </div>
+</div>
+<div class="row mx-auto">
+    <!--Beginning of first table to the left-->
+    <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+    <table class="table pledge_table">
+        <thead class="pledge_thead">
+            <tr>
+                <th colspan="4">
+                    Items Pledged
+                </th>
+            </tr>
+        </thead>
+        {%for pledge_item in pledge_items %}
+        <tr>
+            <td>
+                <a href="pledge_item.item.get_url">
+                    <img src="{{pledge_item.item.image.url}}" width="100" height="100"alt="">
+                </a>
+            </td>
+            <td class="text-left">
+                {{pledge_item.item.name}}
+                <br>
+                Unit Price: KES {{pledge_item.item.price}}
+                <br>
+                Qty: {{pledge_item.quantity}}*{{pledge_item.item.price}}
+            </td>
+            <td>
+                KES {{pledge_item.sub_total}}
+            </td>
+            <!--Compare the quantity of the item against the stock/target we required hence display add to Pledges button else hide-->
+            {% if pledge_item.quantity < pledge_item.item.stock %}
+            <td>
+                <!--respond to user tapping the add button-->
+                &nbsp;<a href="{% url 'add_pledge' pledge_item.item.id %}"><i class="fas fa-plus-circle pledge_icon "></i></a>
+                &nbsp;<a href="{% url 'remove_pledge' pledge_item.item.id %}"><i class="fas fa-minus-circle pledge_icon"></i></a>
+                &nbsp;<a href="{% url 'delete_pledge' pledge_item.item.id %}"><i class="fas fa-trash-alt pledge_icon" ></i></a>
+            </td>
+            {% else %}
+            &nbsp;<a href="{% url 'remove_pledge' pledge_item.item.id %}"><i class="fas fa-minus-circle pledge_icon"></i></a>
+            &nbsp;<a href="{% url 'delete_pledge' pledge_item.item.id %}"><i class="fas fa-trash-alt pledge_icon"></i></a>
+            {% endif %}       
+        </tr>
+        {%endfor%}
+    </table>
+    </div>
+    <!--End of first table to the left-->
+    <!--Beginning of second table to the right-->
+    <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+        <table class="table pledge_table">
+            <thead class="pledge_thead">
+                <tr>
+                    <th colspan="4">
+                       Commit To Your Pledges 
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                       Please Review Your Pledged Items Before Committing
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left">
+                        Your Total Pledge is: <strong>KES {{total}}</strong>
+                    </td>
+                </tr>     
+            </tbody>
+        </table>
+     <!--End of second table to the right-->
+        <!--My pop up form begins here-->
+        <div class="center">
+            <input type="checkbox" id="show">
+            <label for="show" class="show-btn">COMMIT</label>
+            <div class="container">
+               <label for="show" class="close-btn fas fa-times" title="close"></label>
+               <div class="text">
+                  Commitment Form
+               </div>
+               <form class="" action="" method="POST">
+                {% csrf_token %}
+                <div class="data">
+                    <label for="name"><b>Name of Pledger</b></label>
+                    <input type="text" placeholder="Enter Full Name e.g Oywa Oywo" name="name" required>
+                 </div>
+                  <div class="data">
+                     <label for="email"><b>Email</b></label>
+                     <input type="text" placeholder="Enter Email" name="email" required>
+                  </div>
+                  <div class="data">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone"
+                    placeholder="Format: 0712345678"
+                    pattern="[0-9]{10}" required>
+                 </div>
+                 <div class="data">
+                    <label for="ministry"><b>Ministry</b></label>
+                    <input type="text" placeholder="Enter ministry name or Visitor for visitor" name="ministry" required>
+                 </div>
+                <div class="btn">
+                     <div class="inner"></div>
+                     <button type="submit">SUBMIT</button>
+                </div>
+                </form>
+            </div>
+         </div>
+        <!--My pop up form ends here-->
+        <div class="mx-auto">
+            <a href="{% url 'disp_home' %}"style="text-decoration: none;">
+                <button type="button" class="btn btn-lg btn-block bg-dark text-primary">
+                    Pledge More Items
+                </button>
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{%endblock%}

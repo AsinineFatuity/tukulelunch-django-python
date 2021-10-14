@@ -1,0 +1,92 @@
+body{
+  height: 100vh;
+  width: 100%;
+  background: linear-gradient(115deg, #56d8e4 10%, #9f01ea 90%);
+}
+/*The button that shows and hides the pop up form when clicked*/
+.show-btn{
+  background: #3498db;
+  padding: 10px 20px;
+  font-size: 20px;
+  font-weight: 500;
+  color: black;
+  cursor: pointer;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+.show-btn, .container{
+  margin-top: 2px;
+  box-sizing: border-box;
+}
+
+input[type="checkbox"]{
+  display: none;
+}
+/*The whole form*/
+.container{
+  display: none;
+  background:cadetblue;
+  width: 410px;
+  padding: 30px;
+  margin-top: auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+#show:checked ~ .container{
+  display: block;
+}
+/*The X button that closes the pop up form when clicked*/
+.container .close-btn{
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  font-size: 18px;
+  cursor: pointer;
+}
+/*The X button that changes color when hovered around by the mouse*/
+.container .close-btn:hover{
+  color: #3498db;
+}
+/*For the title of the whole form, in my case "Commitment Form"*/
+.container .text{
+  font-size: 25px;
+  font-weight: 600;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+/*space between the title of form and the first title in my case email*/
+.container form{
+  margin-top: -20px;
+}
+/*for the spacing of the whole data*/
+.container form .data{
+  height: 40px;
+  width: 100%;
+  margin: 30px 0;
+  font-family: 'Poppins', sans-serif;
+}
+/*For the labels/heading for inputs*/
+form .data label{ 
+  font-size: 18px;
+  font-family: 'Poppins', sans-serif;
+}
+form .data input{
+  height: 100%;
+  width: 100%;
+  padding-left: 10px;
+  font-size: 17px;
+  border: 1px solid blueviolet;
+  font-family: 'Poppins', sans-serif;
+}
+/*The SUBMIT form button styling*/
+form .btn button{
+  height: 100%;
+  width: 100%;
+  background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);
+  transition: all 0.4s;
+  border: none;
+  color: black;
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
