@@ -1,7 +1,7 @@
 #system variables
 .env
 #virtual environment
-tukule_lunch
+.tukule_lunch
 #Linux operating system
 # temporary files which can be created if a process still has a handle open of a deleted file
 .fuse_hidden*
