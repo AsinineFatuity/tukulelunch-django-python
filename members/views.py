@@ -2,7 +2,7 @@ from typing import IO
 from django.core import paginator
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render,get_object_or_404,redirect
-from .models import Category, Commitment, CommittedItem,Item,PledgeItem,Pledge
+from .models import Category, Commitment, CommittedItem,Item,PledgeItem,Pledge,Payment
 
 #imports to handle the forms
 from django.contrib.auth.models import Group, User
@@ -164,15 +164,20 @@ def thankyou_page(request,commitment_id):
         member_commitment=get_object_or_404(Commitment,id=commitment_id)
     return render(request,'thankyou.html',{'member_commitment':member_commitment})
 #sign up view function
+#sign up view function
 def sign_up_view(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
             sign_up_user = User.objects.get(username=username)
             pledgers_group = Group.objects.get(name='Pledgers')
             pledgers_group.user_set.add(sign_up_user)
+            signin_user = authenticate (username=username,password=raw_password)
+            login(request,signin_user)
+            return redirect('home')
     else:
         form = SignUpForm()
     return render(request,'signup.html',{'form':form})
@@ -205,7 +210,15 @@ def commitment_history(request):
        #extract the user email from the request and then use it to match the one in the commitment details
        email = str(request.user.email)
        commitment_details = Commitment.objects.filter(email_address=email)
-    return render (request,'commitment_history.html',{'commitment_details':commitment_details})
+       #extract the url path so that I render commitment history or payment history depending on what the user clicks
+       if request.method == 'GET':
+           raw_url_path = str(request.path)
+           ref_url_path =raw_url_path.replace('/','')
+           if ref_url_path == "commitment_history":
+               url_path = True
+           elif ref_url_path == "payment_history":
+               url_path = False                         
+    return render (request,'commitment_history.html',{'commitment_details':commitment_details,'url_path':url_path})
 # view to render the commitment details
 @login_required (redirect_field_name='next',login_url='signin')
 def commitment_details(request,commitment_id):
@@ -213,7 +226,19 @@ def commitment_details(request,commitment_id):
         email = str(request.user.email)
         commitment = Commitment.objects.get(id=commitment_id,email_address=email)
         commited_items = CommittedItem.objects.filter(commitment=commitment)
-    return render(request,'commitment_detail.html',{'commitment':commitment,'commited_items':commited_items})
+        try:
+            payment_details = Payment.objects.filter(pay_commitment=commitment).order_by('-date_paid')[0] 
+        except IndexError as ie:
+            payment_details = Payment.objects.filter(pay_commitment=commitment).order_by('-date_paid')
+    return render(request,'commitment_detail.html',{'commitment':commitment,'commited_items':commited_items,'payment':payment_details})
+# view to render user's payment history
+@login_required (redirect_field_name='next',login_url='signin')
+def payment_detail(request,commitment_id):
+    if request.user.is_authenticated:
+        email = str(request.user.email)
+        commitment_details = Commitment.objects.get(id=commitment_id,email_address=email)
+        payment_details = Payment.objects.filter(pay_commitment=commitment_id) 
+    return render (request, 'payment_history.html',{'commitment_details':commitment_details,'payment_details':payment_details})
 #search function
 def search(request):
     items = Item.objects.filter(name__contains=request.GET['item'])

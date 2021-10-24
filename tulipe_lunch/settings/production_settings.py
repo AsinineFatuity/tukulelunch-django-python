@@ -87,12 +87,15 @@ WSGI_APPLICATION = 'tulipe_lunch.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tukule_lunch',
-        'USER': 'asinine_fatuity',
-        'PASSWORD': 'A69ine2020!',
-        'HOST': 'localhost',
-        'PORT':'3306',
+        'OPTIONS': {
+            'sql_mode': 'traditional',
+        },
+        'ENGINE':config('DB_ENGINE'),
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT':config('DB_PORT'),
     }
 }
 # Password validation
@@ -119,7 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 
@@ -132,7 +135,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT= '/var/www/tukulelunch/static'
+STATIC_ROOT= config('STATIC_ROOT')
 STATICFILES=BASE_DIR.joinpath('static')
 MEDIA_URL='/media/'
 MEDIA_ROOT=BASE_DIR.joinpath('static','media')
@@ -144,12 +147,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # specify the crispy form package you would love to use
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 #email credentials to be used
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST_USER = 'tukulelunch@gmail.com'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
+EMAIL_BACKEND = config('EM_BACKEND')
+EMAIL_HOST_USER = config('EM_HOST_USER')
+EMAIL_HOST = config('EM_HOST')
+EMAIL_PORT = config('EM_PORT')
 EMAIL_USE_TLS = True
-EMAIL_HOST_PASSWORD = 'Nyarek12020!'
+EMAIL_HOST_PASSWORD = config('EM_HOST_PWD')
 
 #configure https and ssl settings for production
 CORS_REPLACE_HTTPS_REFERER      = True

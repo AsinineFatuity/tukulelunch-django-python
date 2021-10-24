@@ -2,7 +2,9 @@ from django.db import models
 from django.db.models.deletion import CASCADE
 from django.urls import reverse
 
+#set the deadline as November 27th 
 import datetime
+deadline_date = datetime.date(2021,11,27)
 
 #Category model of the items that I will analogously add and sell to church members
 class Category(models.Model):
@@ -79,22 +81,63 @@ class Commitment(models.Model):
         db_table = 'Commitment'
         ordering = ['-commitment_date']
     def __str__(self):
-        return str(self.id)
+        return str(self.id) 
     #to add the deadline to say a week from the commitment date
     def save(self, *args, **kwargs):
         if self.deadline is None:
-            self.deadline = self.commitment_date + datetime.timedelta(days=7)
+            self.deadline = deadline_date
         super(Commitment, self).save(*args, **kwargs)
 #CommittedItem Model  analogous to Ordered Items in the e-commerce world
 #commitment is analogous to the order as pertains to foreign key
 class CommittedItem(models.Model):
     item = models.CharField(max_length=250)
     quantity = models.IntegerField()
-    price = models.DecimalField(max_digits=10, decimal_places=2,verbose_name='KES Price')
-    commitment = models.ForeignKey(Commitment,on_delete=CASCADE)
+    price = models.DecimalField(max_digits=10, decimal_places=2,verbose_name='Unit Price')
+    commitment = models.ForeignKey(Commitment,on_delete=models.CASCADE)
     class Meta:
         db_table='CommittedItem'
     def sub_total(self):
         return self.quantity * self.price
     def __str__(self):
         return self.item 
+#to track the payment of commitments
+class Payment(models.Model):
+    pay_commitment = models.ForeignKey(Commitment,on_delete=models.CASCADE)
+    amount_paid = models.DecimalField(max_digits=10, decimal_places=2,verbose_name='Amount Paid',default=0)
+    total_paid = models.DecimalField(max_digits=10, decimal_places=2,verbose_name='Total Paid So Far',default=0)
+    date_paid = models.DateTimeField(null=True,blank=True)
+    class Meta:
+        ordering = ('date_paid',)
+        verbose_name = 'Payment'
+        verbose_name_plural = 'Payments'
+    def amount_owed (self):
+        payment_values = Payment.objects.filter(pay_commitment__id=self.pay_commitment.id)
+        for payment in payment_values:
+            debt=payment.pay_commitment.total-payment.total_paid   
+        return debt
+        # return self.pay_commitment.total - self.total_paid
+    def payment_status(self):
+        payment_values = Payment.objects.filter(pay_commitment__id=self.pay_commitment.id)
+        for payment in payment_values:
+            if payment.amount_owed() <= 0:
+                return True
+            else:
+                return False
+    def payment_progress(self):
+        raw_progress = self.total_paid/self.pay_commitment.total
+        percent_progress = int(round(raw_progress,2)*100)
+        return percent_progress
+    # to automatically add the total amount of money paid so far 
+    def save (self, *args,**kwargs):
+        """Get the total amount saved so far else it will ignore the old landmark"""
+        try:
+            recent_total = Payment.objects.filter(pay_commitment=self.pay_commitment.id).order_by('-date_paid')[0]
+            if recent_total.total_paid !=0:
+                self.total_paid = recent_total.total_paid+self.amount_paid
+        except IndexError as ie:
+            recent_total = Payment.objects.order_by('-date_paid')
+            self.total_paid = self.amount_paid      
+        super(Payment,self).save(*args,**kwargs) 
+    def __str__(self):
+        return self.pay_commitment.name
+

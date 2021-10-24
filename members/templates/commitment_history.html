@@ -9,9 +9,13 @@ Commitment History
    <div class="text-center">
        <br>
        <h1 class="text-center product_title">
+           {% if url_path == True %}
            Your Commitment History
-       </h1>
-       <!--Loop through the commitment_details if it is not empty-->
+           {% elif url_path == False %}
+           Your Payment History
+           {% endif %}
+       </h1>  
+       <!--Loop through the commitment_details as long as it is not empty-->
        {% if commitment_details %}
        <table class="table table-striped">
         <div class="col-12 col-md-8 col-lg-6 pb-5">
@@ -20,9 +24,12 @@ Commitment History
                    <th>Commitment Number</th>
                    <th>Commitment Date</th> 
                    <th>Deadline Date</th>
-                   <th>Total Amount</th>
-                   <th>Status</th>
-                   <th>Action</th>
+                   <th>Total Pledged</th>
+                   {%if url_path == True %}
+                   <th>Commitment Details</th>
+                   {% elif url_path == False %}
+                   <th>Payment History</th>
+                   {% endif %}
                </tr>
            </thead>
            <tbody>
@@ -32,19 +39,31 @@ Commitment History
                    <td>{{ commitment.commitment_date }}</td>
                    <td>{{ commitment.deadline }}</td>
                    <td>{{ commitment.total }}</td>
-                   <td><i class="fas fa-spinner"></i>&nbsp;0% Honoured</td>
-                   <td><a href="{% url 'commit_detail' commitment.id %}"style="text-decoration: none; color: white;">View Commitment</a></td>
+            <!--Help display either payment history or commitment details links depending on what the user has selected-->
+                  {% if url_path == True %}
+                   <td><a href="{% url 'commit_detail' commitment.id %}"style="text-decoration: none; color: white;">View</a></td>
+                   {%elif url_path == False %}
+                   <td><a href="{% url 'pay_hist_detail' commitment.id %}"style="text-decoration: none; color: white;">View</a></td>
+                   {% endif %}
                </tr>
                {% endfor %}
            </tbody>
-       </table>
-       {% else %}
-       <p>You have not committed any thing yet
+       </table> 
+       {% elif url_path == True %}
+       <p>You have not committed any item yet
            <br><br>
         <a href="{% url 'pledge_detail' %} " class="btn btn-secondary">
             COMMIT YOUR PLEDGES  
             </a>
-       </p>    
+       </p> 
+       {% else %}
+       <p>You have not honoured your commitment yet
+           <br><br>
+       <a href="#footer" class="btn btn-secondary">
+         PAY YOUR PLEDGES  
+           </a>
+           <b>MPESA DETAILS ARE IN THE FOOTER</b>
+       </p> 
        {% endif %}
    </div>
 </div>

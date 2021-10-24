@@ -16,7 +16,12 @@
             </div>      
         </li>
         <li class="nav-item"><a class="nav-link text-uppercase font-weight-bold px-3" href="{% url 'contact'%}">Contact</a></li>
-        <li class="nav-item"><a class="nav-link text-uppercase font-weight-bold px-3" href="#footer">Payment&nbsp;<i class="fas fa-money-bill-wave-alt"></i></a></li>
+        <li class="nav-item dropdown">
+            <a class="nav-link text-uppercase font-weight-bold px-3 dropdown-toggle text-primary" data-toggle="dropdown">Payment</a>
+            <div class="dropdown-menu">
+                <a href="#footer" class="dropdown-item">See Footer For Details</a>
+            </div>
+        </li>
          <!--Start of all the user auth logic-->
         <!--Check if user is logged in to display user name-->
         {% if request.user.is_authenticated and request.user.first_name %}
@@ -28,6 +33,7 @@
             <!--The dropdown items will be displayed below-->
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="{% url 'commit_history' %}">Commitment History</a>
+                <a class="dropdown-item" href="{% url 'pay_history' %}">Payment History</a>
             </div> 
         </li>
         <li class="nav-item">
@@ -35,6 +41,16 @@
              Sign Out<i class="fas fa-sign-out-alt"></i>
             </a>
          </li>
+         <!--Display different things for the superuser-->
+         {% elif user.is_superuser%}
+         <li class="nav-item dropdown">
+            <a class="nav-link text-uppercase font-weight-bold px-3 dropdown-toggle text-primary" data-toggle="dropdown">
+            Welcome, ADMIN</a>
+            <div class="dropdown-menu">
+                <a href="{% url 'admin:index'%}" class="dropdown-item">GO TO ADMIN PORTAL</a>
+                <a href="{% url 'admin:logout'%}" class="dropdown-item">LOGOUT ADMIN</a>
+            </div>
+        </li>
          {%else%} <!--Display Sign Up and Sign In Links to Logged out Users-->
          <li class="nav-item">
             <a class="nav-link text-uppercase font-weight-bold px-3" href="{% url 'signup' %}">

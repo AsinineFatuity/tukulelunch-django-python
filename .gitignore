@@ -7,7 +7,7 @@
 .fuse_hidden*
 # KDE directory preferences
 .directory
-
+migrations/
 # Linux trash folder which might appear on any partition or disk
 .Trash-*
 
@@ -18,7 +18,10 @@ __pycache__/
 
 # C extensions
 *.so
-
+#my media files
+media/
+#my secret key text file
+secret_key.txt
 # Distribution / packaging
 .Python
 build/

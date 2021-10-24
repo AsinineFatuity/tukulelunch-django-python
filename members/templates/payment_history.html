@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Payment History
+{% endblock %}
+{% block content%}
+<link rel="stylesheet" href="{% static 'css/display.css' %}">
+   <div class="text-center">
+       <br>
+       <h1 class="text-center product_title">
+         Payment History for Commitment #{{ commitment_details.id }}
+       </h1>
+       <!--Loop through the payment_details if it is not empty-->
+       {% if payment_details %}
+       <tr>
+       {% for payment in payment_details %}
+        <td class="text-right" colspan="3" ><b>Payment Progress</b></td>
+        {% if payment.payment_status == True %}
+          <td><i class="fas fa-check"></i>&nbsp;Fully Honoured</td>
+          {% elif payment.payment_status == False %}
+          <td><i class="fas fa-spinner"></i> {{ payment.payment_progress }}%</td>
+          {% endif %}
+      </tr>
+      {% endfor %}
+       <table class="table table-striped">
+        <div class="col-12 col-md-8 col-lg-6 pb-2">
+           <thead>
+               <tr>
+                   <th>Date of Payment</th> 
+                   <th>Amount Paid</th>
+                   <th>Total Paid</th>
+               </tr>
+           </thead>
+           <tbody>
+               {% for payment in payment_details %}
+               <tr>
+                   <td>{{ payment.date_paid|date:"D, d M, Y" }}</td>
+                   <td>{{ payment.amount_paid }}</td>
+                   <td>{{ payment.total_paid }}</td>
+               </tr>
+               {% endfor %}
+           </tbody>
+       </table>
+       {% else %}
+       <p>You have not honoured your commitment yet
+        <br><br>
+    <a href="#footer" class="btn btn-secondary">
+      PAY YOUR PLEDGES  
+        </a>
+      <b>MPESA DETAILS ARE IN THE FOOTER</b>
+    </p>
+       {% endif %}
+   </div>
+</div>
+   <br><br>
+{% endblock %}

@@ -20,7 +20,6 @@ Commitment Details
                 <b>Commitment Date: </b>{{ commitment.commitment_date }} <br>
                 <b>Deadline: </b>{{ commitment.deadline }} <br>
                 <b>Commitment Total: </b>{{ commitment.total }} <br>
-                <b>Commitment Status: </b><i class="fas fa-check"></i>&nbsp;Fully Honoured
             </td>
             <td class="text-left" colspan="2">
                 <b>Ministry: </b> {{ commitment.ministry }} <br>
@@ -35,25 +34,26 @@ Commitment Details
          </tr>
          {% for item in commited_items %}
           <tr>
-              <td>{{ item.product }}</td>
+              <td>{{ item.item }}</td>
               <td>{{ item.quantity }}</td>
-              <td>KES{{ item.price }}</td>
-              <td>KES{{ item.sub_total }}</td>
+              <td>KES {{ item.price }}</td>
+              <td>KES {{ item.sub_total }}</td>
           </tr>
          {% endfor %}
          <tr>
-             <td class="text-right"colspan="3"><b>Total</b></td>
-             <td>KES{{ commitment.total }}</td>
+             <td class="text-right"colspan="3"><b>Total Pledged</b></td>
+             <td>KES {{ commitment.total }}</td>
          </tr>
          <tr>
-             <td class="text-right" colspan="3">Total Paid</td>
-             <td>KES{{ commitment.total }}</td>
-         </tr>
+             <td class="text-right" colspan="3"><b>Total Paid</b></td>
+             <td>KES {{ payment.total_paid }}</td>
+         </tr>      
      </table>
      <button class="btn btn-secondary" onclick="window.print();"> 
         <i class="fas fa-print"></i>
-      Print Commitment
+      Print Details
     </button>
+    <p><b>NOTE: THIS IS NOT AN OFFICIAL RECEIPT</b></p>
  </div>
 </div>
 </div>
