@@ -49,6 +49,7 @@ members_patterns=[
     path('commitment_detail/<int:commitment_id>',members_views.commitment_details,name='commit_detail'),
     path('search/',members_views.search,name='search'),
     path('contact/',members_views.contact,name='contact'),
+    path('about/',members_views.about,name='about'),
 
 ]
 urlpatterns = [
@@ -58,6 +59,7 @@ urlpatterns = [
         "favicon.ico",
         RedirectView.as_view(url=staticfiles_storage.url("favicon.ico")),
     ),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 if settings.DEBUG: # to serve the static files in development mode
     #for serving static files

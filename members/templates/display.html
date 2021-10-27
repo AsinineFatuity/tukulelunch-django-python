@@ -21,7 +21,7 @@ All Items
 <div class="container">
     <div class="row row-no-gutters">
         {% for item in items %}
-        <!-- {%if item.stock > 0%} -->
+         {%if item.stock > 0%}
         <!--Display 4 thumbnails per row-->
         <div class="col-9 col-md-6 col-lg-3 col-xs-4 d-flex align-items-center">
             <div class="card mb-0"style="border-color:transparent;">
@@ -34,11 +34,10 @@ All Items
                     <h5 class="card-title font-weight-bold mb-0">{{item.name}}</h5>
                     <h5 class="card-text text-info font-italic mb-0">
                     <span class="mr-0 ml-1"> KES</span> {{item.price}}</h5>
-                    <!-- <a href="{{ item.get_url }}" class="btn btn-primary p-0 mb-0">View</a>        -->
                 </div>
             </div>
         </div>
-        <!-- {%endif%} -->
+        {% endif %}
         {%endfor%}
     </div>
 </div>

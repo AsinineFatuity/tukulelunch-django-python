@@ -202,6 +202,10 @@ def sign_in_view(request):
 def sign_out_view(request):
     logout(request)
     return redirect('signin')
+#say something directive about the web app
+def about(request):
+    return render(request,'about.html')
+
 #commitment_history
 #to customize the login redirect from django's (accounts/login/?next=/) we add the following the login required decorator
 @login_required (redirect_field_name='next',login_url='signin')

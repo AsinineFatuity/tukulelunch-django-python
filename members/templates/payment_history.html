@@ -13,16 +13,8 @@ Payment History
        </h1>
        <!--Loop through the payment_details if it is not empty-->
        {% if payment_details %}
-       <tr>
-       {% for payment in payment_details %}
-        <td class="text-right" colspan="3" ><b>Payment Progress</b></td>
-        {% if payment.payment_status == True %}
-          <td><i class="fas fa-check"></i>&nbsp;Fully Honoured</td>
-          {% elif payment.payment_status == False %}
-          <td><i class="fas fa-spinner"></i> {{ payment.payment_progress }}%</td>
-          {% endif %}
-      </tr>
-      {% endfor %}
+       <!-- {% for payment in payment_details %} -->
+      <!-- {% endfor %} -->
        <table class="table table-striped">
         <div class="col-12 col-md-8 col-lg-6 pb-2">
            <thead>
@@ -30,6 +22,7 @@ Payment History
                    <th>Date of Payment</th> 
                    <th>Amount Paid</th>
                    <th>Total Paid</th>
+                   <th>Payment Progress</th>
                </tr>
            </thead>
            <tbody>
@@ -38,6 +31,11 @@ Payment History
                    <td>{{ payment.date_paid|date:"D, d M, Y" }}</td>
                    <td>{{ payment.amount_paid }}</td>
                    <td>{{ payment.total_paid }}</td>
+                    {% if payment.payment_status == True %}
+                    <td><i class="fas fa-check"></i>&nbsp;Fully Honoured</td>
+                    {% elif payment.payment_status == False %}
+                    <td><i class="fas fa-spinner"></i> {{ payment.payment_progress }}%</td>
+                    {% endif %}
                </tr>
                {% endfor %}
            </tbody>

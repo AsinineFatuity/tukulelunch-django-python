@@ -127,6 +127,7 @@ class Payment(models.Model):
         raw_progress = self.total_paid/self.pay_commitment.total
         percent_progress = int(round(raw_progress,2)*100)
         return percent_progress
+    
     # to automatically add the total amount of money paid so far 
     def save (self, *args,**kwargs):
         """Get the total amount saved so far else it will ignore the old landmark"""
