@@ -29,7 +29,7 @@ from django.conf.urls.static import static
 
 from members import views as members_views
 
-
+from django.contrib.auth import views as auth_views #for password resets
 members_patterns=[
     path((''),members_views.home_page,name='home'),
     path('category/<slug:category_slug>',members_views.display_page,name='items_by_category'),
@@ -50,6 +50,8 @@ members_patterns=[
     path('search/',members_views.search,name='search'),
     path('contact/',members_views.contact,name='contact'),
     path('about/',members_views.about,name='about'),
+    path('accounts/password_reset/', members_views.password_reset_request, name="password_reset")
+
 
 ]
 urlpatterns = [
@@ -59,7 +61,10 @@ urlpatterns = [
         "favicon.ico",
         RedirectView.as_view(url=staticfiles_storage.url("favicon.ico")),
     ),
-    path('accounts/', include('django.contrib.auth.urls')),
+   # path('accounts/', include('django.contrib.auth.urls')),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='password/password_reset_done.html'), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="password/password_reset_confirm.html"), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='password/password_reset_complete.html'), name='password_reset_complete'),      
 ]
 if settings.DEBUG: # to serve the static files in development mode
     #for serving static files
