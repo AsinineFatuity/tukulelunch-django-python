@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render,get_object_or_404,redirect
 from .models import Category, Commitment, CommittedItem,Item,PledgeItem,Pledge,Payment
 
+
 #imports to handle the forms
 from django.contrib.auth.models import Group, User
 from .forms import SignUpForm,ContactForm
@@ -12,6 +13,7 @@ from django.contrib.auth import login,authenticate,logout
 
 #to show the logged in user their pledge history we first import login required functionality
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 #to handle the emails
 from django.core.paginator import Paginator,EmptyPage,InvalidPage
@@ -69,7 +71,7 @@ def pledge_id_fn(request):
     return pledge
 #add pledge and the quantity
 def add_pledge(request,item_id):
-    
+  
     item=Item.objects.get(id=item_id)
     #ensure item is not added more than once in a  pledge (analogous to cart)
     try:
@@ -280,7 +282,6 @@ def send_email(commitment_id):
         msg.send()
     except IOError as ioe:
         return ioe
-
 #contact page
 def contact(request):
     if request.method == 'POST':  
@@ -333,3 +334,4 @@ def password_reset_request(request):
 					return redirect ("/password_reset/done/")
 	password_reset_form = PasswordResetForm()
 	return render(request=request, template_name="password/password_reset.html", context={"password_reset_form":password_reset_form})
+    

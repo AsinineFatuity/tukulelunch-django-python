@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin.decorators import display
-from .models import Category,Item,Commitment,CommittedItem,Payment
+from .models import Category,Item,Commitment,CommittedItem,Payment,GhostPayment
 
 #customize the admin
 admin.site.site_header = "Tukule Lunch Admin"
@@ -54,8 +54,9 @@ class PaymentAdmin(admin.TabularInline):
     can_delete = False
 @admin.register(Commitment)
 class CommitmentAdmin(admin.ModelAdmin):
-    list_display = ['id','name','phone_number','ministry','commitment_date']
+    list_display = ['id','name','phone_number','ministry','commitment_date','honoured']
     list_display_links = ('name',)
+    list_editable = ['honoured']
     search_fields = ['name','ministry','phone_number']
     readonly_fields=['name','email_address','ministry','phone_number','commitment_date','total','deadline','token']
     fieldsets = [
@@ -70,3 +71,8 @@ class CommitmentAdmin(admin.ModelAdmin):
         return False
     def has_add_permission(self, request):
         return False     
+@admin.register(GhostPayment)
+class GhostPaymentAdmin(admin.ModelAdmin):
+    list_display = ['name','phone_number','amount_paid','date_paid']
+    def has_delete_permission(self, request,obj=None):
+        return False

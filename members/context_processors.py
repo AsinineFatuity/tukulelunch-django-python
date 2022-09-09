@@ -7,7 +7,7 @@ def counter(request):
         return {}
     else:
         try:
-            pledge=Pledge.objects.filter(pledge_id=pledge_id_fn(request)) #specify cart object in the current session
+            pledge=Pledge.objects.filter(pledge_id=pledge_id_fn(request)) #specify pledge object in the current session
             #find the current pledged_item in the session and return only a single pledge_items object
             pledge_items=PledgeItem.objects.all().filter(pledge=pledge[:1]) 
             for pledge_item in pledge_items:

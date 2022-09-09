@@ -71,12 +71,13 @@ class PledgeItem(models.Model):
 class Commitment(models.Model):
     token = models.CharField(max_length=250, blank=True)
     total = models.DecimalField(max_digits=10, decimal_places=2,verbose_name='KES Committed Total')
-    name = models.CharField(max_length=20, blank=True)
+    name = models.CharField(max_length=100, blank=True)
     email_address = models.EmailField(max_length=250, blank=True,verbose_name='Email Address')
     phone_number = models.CharField(max_length=250, blank=True)
     ministry = models.CharField(max_length=20, blank=True)
     commitment_date = models.DateField()
     deadline = models.DateField()
+    honoured = models.BooleanField(default=False,verbose_name='Honoured')
     class Meta:
         db_table = 'Commitment'
         ordering = ['-commitment_date']
@@ -141,4 +142,11 @@ class Payment(models.Model):
         super(Payment,self).save(*args,**kwargs) 
     def __str__(self):
         return self.pay_commitment.name
+class GhostPayment(models.Model):
+    name = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=250)
+    amount_paid = models.DecimalField(max_digits=10, decimal_places=2,verbose_name='Amount Paid',default=0)
+    date_paid = models.DateTimeField(null=True,blank=True)
 
+    def __str__(self):
+        return self.name

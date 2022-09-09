@@ -51,8 +51,6 @@ members_patterns=[
     path('contact/',members_views.contact,name='contact'),
     path('about/',members_views.about,name='about'),
     path('accounts/password_reset/', members_views.password_reset_request, name="password_reset")
-
-
 ]
 urlpatterns = [
     path('admin/', admin.site.urls),
